@@ -1,0 +1,15 @@
+---
+title: "Post"
+listing:
+  contents:
+    - posts
+  categories: true
+  sort:
+    - "date desc"
+    - "title asc"
+  sort-ui: [title, date]
+  filter-ui: [title, date]
+---
+
+Test Posts
+

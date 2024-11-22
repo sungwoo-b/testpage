@@ -1,0 +1,59 @@
+---
+title: "Out of Date Data"
+draft: false
+image: "../img/barplot.png"
+layout: "blog"
+---
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: 'hide'
+
+import pandas as pd
+import numpy as np
+import re
+from IPython.display import display
+
+```
+
+Data that has been more than 5 days past the last update.
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: 'hide'
+
+def find_outofdate(url: str, threshold: int):
+    tabs = pd.read_html(url)
+    table = tabs[1]
+    table['outOfDate'] = table['outOfDate'].apply(lambda x: float(re.sub(r'[^0-9.]', '', str(x))))
+    table = table[table['outOfDate'] > threshold]
+
+    return table
+
+```
+
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| column: page
+
+url = 'https://polarwatch.noaa.gov/erddap/outOfDateDatasets.html?&outOfDate%3E=0.5'
+threshold = 5
+
+df = find_outofdate(url, threshold)
+df = df[['outOfDate', 'datasetID', 'title']]
+
+display_df = df.style.format(
+    {'datasetID': lambda x: f'<a href="https://polarwatch.noaa.gov/erddap/info/{x}/index.html" target="_blank">{x}</a>'}
+)
+
+display(display_df)
+
+
+```
