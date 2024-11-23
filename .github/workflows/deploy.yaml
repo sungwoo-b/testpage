@@ -28,7 +28,7 @@ jobs:
           pip install cartopy xarray netCDF4 cftime IPython
           pip install scikit-learn tensorflow scipy
           pip install pybaseball
-          pip install itable
+          pip install itables
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
