@@ -9,7 +9,6 @@ website:
         text: Home
       - href: post.qmd
         text: Post
-      - about.qmd
 
 format:
   html:

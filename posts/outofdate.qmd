@@ -15,6 +15,7 @@ import pandas as pd
 import numpy as np
 import re
 from IPython.display import display
+from itables import init_notebook_mode, show
 
 ```
 
@@ -34,8 +35,11 @@ def find_outofdate(url: str, threshold: int):
 
     return table
 
-```
+def add_link(val):
+    url = 'https://polarwatch.noaa.gov/erddap/info/' + val + '/index.html'
+    return f'<a href="{url}" target="_blank">{val}</a>'
 
+```
 
 ```{python}
 #| echo: false
@@ -47,13 +51,14 @@ url = 'https://polarwatch.noaa.gov/erddap/outOfDateDatasets.html?&outOfDate%3E=0
 threshold = 5
 
 df = find_outofdate(url, threshold)
-df = df[['outOfDate', 'datasetID', 'title']]
 
-display_df = df.style.format(
-    {'datasetID': lambda x: f'<a href="https://polarwatch.noaa.gov/erddap/info/{x}/index.html" target="_blank">{x}</a>'}
+df = df.copy()
+df['datasetID'] = df['datasetID'].apply(add_link)
+
+show(
+    df.reset_index(),
+    buttons=["columnsToggle"],
 )
-
-display(display_df)
 
 
 ```
